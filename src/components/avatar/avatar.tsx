@@ -9,7 +9,7 @@ export const Avatar: React.FC<AvatarProps> = (props) => {
   return (
     <div
       {...rest}
-      className={clsx(styles.avatar, props.className)}
+      className={clsx(styles.avatar, className)}
       style={{
         height: size,
         width: size,
