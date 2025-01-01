@@ -1,0 +1,29 @@
+.page {
+}
+
+.media {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  width: 100%;
+  height: 40dvh;
+  max-height: 60dvh;
+  min-height: 480px;
+  overflow-x: clip;
+  background: #000;
+}
+
+.content {
+  padding: 24px;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0px, 1fr));
+  gap: 24px;
+}
+
+.info {
+  grid-column: 1 / 5;
+}
+
+.comments {
+  grid-column: 5 / 7;
+}

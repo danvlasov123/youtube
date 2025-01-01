@@ -1,0 +1,26 @@
+.header {
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  justify-content: space-between;
+  background-color: white;
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .left a {
+    text-decoration: none;
+    color: black;
+    font-size: 24px;
+  }
+
+  .right {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+}
