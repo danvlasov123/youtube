@@ -1,6 +1,3 @@
-.page {
-}
-
 .media {
   display: flex;
   flex-direction: row;
@@ -18,12 +15,19 @@
   display: grid;
   grid-template-columns: repeat(6, minmax(0px, 1fr));
   gap: 24px;
+  grid-template-areas:
+    "info info info info collection collection"
+    "comments comments comments comments collection collection";
 }
 
 .info {
-  grid-column: 1 / 5;
+  grid-area: info;
+}
+
+.collection {
+  grid-area: collection;
 }
 
 .comments {
-  grid-column: 5 / 7;
+  grid-area: comments;
 }

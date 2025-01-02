@@ -2,5 +2,65 @@
   padding: 24px;
   background-color: white;
   border-radius: 12px;
-  height: 100%;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: -0.4px;
+
+  span {
+    color: var(--color-grey);
+    margin-left: 4px;
+  }
+}
+
+.list {
+  padding-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.comment {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  .author {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    p {
+      margin: 0;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    span {
+      color: var(--color-grey);
+      font-size: 12px;
+    }
+  }
+}
+
+.text {
+  padding: 8px 0;
+  p {
+    margin: 0;
+  }
+}
+
+.reply {
+  outline: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  background-color: transparent;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: -0.4px;
+  cursor: pointer;
 }
