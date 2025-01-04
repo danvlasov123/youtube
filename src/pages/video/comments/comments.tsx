@@ -1,21 +1,24 @@
-import { Avatar } from "src/components";
+import React from "react";
 import styles from "./comments.module.scss";
 
-const VideoComment = () => {
+import { CommentCard, CommentAdd } from "src/components/comment";
+
+const Add = () => {
+  const [focused, setFocused] = React.useState(false);
+
+  const [value, setValue] = React.useState("");
+
   return (
-    <div className={styles.comment}>
-      <div className={styles.author}>
-        <Avatar size={32} title="A" />
-        <p>Anton Pavlov</p>
-        <span> 30 мин.</span>
-      </div>
-      <div className={styles.text}>
-        <p>very interesting.</p>
-      </div>
-      <div className={styles.actions}>
-        <button className={styles.reply}>Ответить</button>
-      </div>
-    </div>
+    <CommentAdd
+      textarea={{
+        rows: focused ? 4 : 1,
+        onChange: (e) => setValue(e.target.value),
+        onFocus: () => setFocused(true),
+        onBlur: () => !value && setFocused(false),
+        value,
+      }}
+      isViewAction={focused}
+    />
   );
 };
 
@@ -26,11 +29,11 @@ export const VideoComments = () => {
         Комментарии <span>24</span>
       </p>
       <div className={styles.list}>
-        <VideoComment />
-        <VideoComment />
-        <VideoComment />
-        <VideoComment />
-        <VideoComment />
+        <CommentCard />
+        <CommentCard />
+      </div>
+      <div className={styles.write}>
+        <Add />
       </div>
     </div>
   );

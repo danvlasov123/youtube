@@ -16,8 +16,8 @@
   grid-template-columns: repeat(6, minmax(0px, 1fr));
   gap: 24px;
   grid-template-areas:
-    "info info info info collection collection"
-    "comments comments comments comments collection collection";
+    "info info info info comments comments"
+    "collection collection collection collection comments comments";
 }
 
 .info {

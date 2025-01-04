@@ -8,7 +8,7 @@ export const VideoCollections: React.FC = () => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.head}>
-        <h2 className={styles.title}>Коллекции</h2>
+        <h2 className={styles.title}>Рекомендации</h2>
         <div className={styles.autoplay}>
           <span>Авто</span>
           <Switch />

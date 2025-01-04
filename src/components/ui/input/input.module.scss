@@ -1,0 +1,14 @@
+.input {
+  padding: 8px;
+  margin: 0;
+  border: 1px solid rgb(199, 194, 194);
+  min-height: 38px;
+  border-radius: 10px;
+  background-color: transparent;
+  resize: none;
+
+  &:focus {
+    outline: 2px solid var(--color-blue);
+    outline-offset: -1px;
+  }
+}

@@ -20,6 +20,7 @@
   --color-light-grey: #eff1f4;
   --color-light: #02051314;
   --color-grey-text: #657987;
+  --color-blue: oklch(69% 50% 264);
 }
 
 .Root {
@@ -42,4 +43,16 @@ body {
 
 body {
   background-color: var(--color-light-grey);
+}
+
+.w-full {
+  width: 100%;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.justify-center {
+  justify-content: center;
 }

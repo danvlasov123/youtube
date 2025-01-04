@@ -1,6 +1,10 @@
+import React from "react";
 import styles from "./player.module.scss";
 
-export const Player = () => {
+export const Player = React.forwardRef<
+  HTMLVideoElement,
+  React.ComponentProps<"video">
+>((props, ref) => {
   return (
     <video
       className={styles.player}
@@ -12,6 +16,8 @@ export const Player = () => {
       height="auto"
       autoPlay
       src="https://cdn.pixabay.com/video/2016/10/09/5858-865412786_large.mp4"
+      ref={ref}
+      {...props}
     ></video>
   );
-};
+});
