@@ -1,5 +1,3 @@
-import React from "react";
-
 import styles from "./sign-in.module.scss";
 import { Button, Input } from "src/components/ui";
 
