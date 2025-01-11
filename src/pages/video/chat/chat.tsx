@@ -1,6 +1,6 @@
 import React from "react";
-import styles from "./comments.module.scss";
 
+import styles from "./chat.module.scss";
 import { CommentCard, CommentAdd } from "src/components/comment";
 
 const Add = () => {
@@ -10,7 +10,7 @@ const Add = () => {
 
   return (
     <CommentAdd
-      placeholder="Напишите ваш комментарий"
+      placeholder="Напишите ваш вопрос"
       textarea={{
         rows: focused ? 4 : 1,
         onChange: (e) => setValue(e.target.value),
@@ -23,15 +23,12 @@ const Add = () => {
   );
 };
 
-export const VideoComments = () => {
+export const VideoChat: React.FC = () => {
   return (
     <div className={styles.wrapper}>
-      <p className={styles.title}>
-        Комментарии <span>24</span>
-      </p>
+      <p className={styles.title}>Чат с автором</p>
       <div className={styles.list}>
-        <CommentCard />
-        <CommentCard />
+        <CommentCard isChat />
       </div>
       <div className={styles.write}>
         <Add />

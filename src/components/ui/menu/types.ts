@@ -1,3 +1,7 @@
+import {
+  Align,
+  Side,
+} from "node_modules/@base-ui-components/react/esm/utils/useAnchorPositioning";
 import React from "react";
 
 export type MenuProps = {
@@ -7,4 +11,8 @@ export type MenuProps = {
     title: string;
     label: string;
   }[];
+  positioner?: {
+    side: Side;
+    align: Align;
+  };
 };

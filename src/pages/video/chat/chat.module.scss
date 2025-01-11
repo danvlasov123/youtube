@@ -2,7 +2,6 @@
   padding: 24px;
   background-color: white;
   border-radius: 12px;
-  border-top-left-radius: 0;
 }
 
 .title {
@@ -10,11 +9,6 @@
   font-weight: 600;
   margin: 0;
   letter-spacing: -0.4px;
-
-  span {
-    color: var(--color-grey);
-    margin-left: 4px;
-  }
 }
 
 .list {

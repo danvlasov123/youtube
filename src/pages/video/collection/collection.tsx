@@ -19,6 +19,7 @@ export const VideoCollections: React.FC = () => {
         <VideoCard />
         <VideoCard />
         <VideoCard />
+        <VideoCard />
       </div>
     </div>
   );

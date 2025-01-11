@@ -5,7 +5,11 @@ import { Menu as BaseMenu } from "@base-ui-components/react/menu";
 
 import styles from "./menu.module.scss";
 
-export const Menu: React.FC<MenuProps> = ({ options = [], trigger }) => {
+export const Menu: React.FC<MenuProps> = ({
+  options = [],
+  trigger,
+  positioner,
+}) => {
   return (
     <BaseMenu.Root>
       <BaseMenu.Trigger className={styles.trigger}>{trigger}</BaseMenu.Trigger>
@@ -13,6 +17,7 @@ export const Menu: React.FC<MenuProps> = ({ options = [], trigger }) => {
         <BaseMenu.Positioner
           side="bottom"
           align="start"
+          {...positioner}
           className={styles.positioner}
           sideOffset={8}
         >

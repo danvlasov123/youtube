@@ -8,6 +8,7 @@ import { CommentAddProps } from "./types";
 export const CommentAdd: React.FC<CommentAddProps> = ({
   isViewAction = true,
   button,
+  placeholder,
   textarea,
 }) => {
   return (
@@ -15,7 +16,7 @@ export const CommentAdd: React.FC<CommentAddProps> = ({
       <div className={styles.content}>
         <Avatar size={38} title="D" />
         <TextArea
-          placeholder="Напишите ваш комментарий"
+          placeholder={placeholder}
           className="w-full"
           {...textarea}
         />

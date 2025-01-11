@@ -4,7 +4,9 @@ import styles from "./card.module.scss";
 import React from "react";
 import { CommentAdd } from "../add";
 
-export const CommentCard = () => {
+export const CommentCard: React.FC<{ isChat?: boolean }> = ({
+  isChat = false,
+}) => {
   const [reply, setReply] = React.useState(false);
 
   const [value, setValue] = React.useState("");
@@ -29,23 +31,26 @@ export const CommentCard = () => {
           including versions of Lorem Ipsum.
         </p>
       </div>
-      <div className={styles.actions}>
-        {reply ? (
-          <CommentAdd
-            textarea={{
-              rows: 4,
-              autoFocus: true,
-              onChange: (e) => setValue(e.target.value),
-              onBlur: () => !value && setReply(false),
-              value,
-            }}
-          />
-        ) : (
-          <button className={styles.reply} onClick={() => setReply(true)}>
-            Ответить
-          </button>
-        )}
-      </div>
+      {!isChat && (
+        <div className={styles.actions}>
+          {reply ? (
+            <CommentAdd
+              placeholder="Напишите ваш ответ"
+              textarea={{
+                rows: 4,
+                autoFocus: true,
+                onChange: (e) => setValue(e.target.value),
+                onBlur: () => !value && setReply(false),
+                value,
+              }}
+            />
+          ) : (
+            <button className={styles.reply} onClick={() => setReply(true)}>
+              Ответить
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 };
