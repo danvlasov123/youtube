@@ -82,17 +82,6 @@
   .time {
     display: flex;
     justify-content: center;
-    p {
-      text-align: center;
-      margin: 0;
-      font-size: 14px;
-      color: var(--color-grey-text);
-    }
-
-    span {
-      color: rgb(102, 157, 19);
-      font-size: 14px;
-    }
   }
 
   .date {
@@ -124,19 +113,25 @@
 .columnTime {
   display: flex;
   justify-content: center;
-  width: 20%;
+  width: 15%;
 }
 
 .columnDate {
   display: flex;
   justify-content: center;
-  width: 20%;
+  width: 15%;
 }
 
 .columnReferal {
   display: flex;
   justify-content: center;
-  width: 20%;
+  width: 15%;
+}
+
+.columnType {
+  display: flex;
+  justify-content: center;
+  width: 15%;
 }
 
 .columnActions {

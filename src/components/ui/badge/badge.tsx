@@ -5,7 +5,7 @@ import styles from "./badge.module.scss";
 import clsx from "clsx";
 
 export const Badge: React.FC<React.PropsWithChildren<BadgeProps>> = (props) => {
-  const { color = "default", children, ...rest } = props;
+  const { color = "default", children, size = "small", ...rest } = props;
   return (
     <div
       {...rest}
@@ -14,6 +14,7 @@ export const Badge: React.FC<React.PropsWithChildren<BadgeProps>> = (props) => {
         [styles.default]: color === "default",
         [styles.yellow]: color === "yellow",
         [styles.blue]: color === "blue",
+        [styles.large]: size === "large",
       })}
     >
       <span>{children}</span>

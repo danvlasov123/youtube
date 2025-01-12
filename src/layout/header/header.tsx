@@ -4,18 +4,19 @@ import { HeaderUser } from "./user";
 import { PiQuestionLight, PiPlus } from "react-icons/pi";
 import { LiaCrownSolid } from "react-icons/lia";
 import { IoMdNotificationsOutline } from "react-icons/io";
+import { Link } from "react-router";
 
 export const Header = () => {
   return (
     <div className={styles.header}>
       <div className={styles.left}>
-        <a href="">LOGO</a>
+        <Link to="/">LOGO</Link>
       </div>
       <div className={styles.right}>
         <div className={styles.actions}>
-          <a href="" className="flex">
+          <Link to="/" className="flex">
             <PiQuestionLight fontSize={22} cursor="pointer" />
-          </a>
+          </Link>
 
           <Button>
             <LiaCrownSolid fontSize={14} />

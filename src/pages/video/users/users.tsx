@@ -5,13 +5,11 @@ import { Avatar } from "src/components";
 import clsx from "clsx";
 
 import { IoMdCheckmark, IoMdClose } from "react-icons/io";
-import { Button, Menu, Tooltip } from "src/components/ui";
+import { Badge, Button, Menu, Tooltip } from "src/components/ui";
 import { PiDotsThreeOutlineLight } from "react-icons/pi";
 
 const VideoUserItem = () => {
   const random = Math.random() < 0.5;
-
-  console.log(random);
 
   return (
     <li className={styles.list__item}>
@@ -27,13 +25,20 @@ const VideoUserItem = () => {
         </div>
       </div>
       <div className={clsx(styles.time, styles.columnTime)}>
-        {random ? <p>04:50</p> : <span>Смотрит</span>}
+        {random ? <Badge>04:50</Badge> : <Badge color="green">Смотрит</Badge>}
       </div>
       <div className={clsx(styles.date, styles.columnDate)}>
-        <p>Сб. 11 янв. 16:30</p>
+        <Badge>11 янв. 16:30</Badge>
       </div>
       <div className={clsx(styles.referal, styles.columnReferal)}>
         {random ? <IoMdCheckmark color="rgb(102, 157, 19)" /> : <IoMdClose />}
+      </div>
+      <div className={clsx(styles.type, styles.columnType)}>
+        {random ? (
+          <Badge color="default">Зритель</Badge>
+        ) : (
+          <Badge color="blue">Менеджер</Badge>
+        )}
       </div>
       <div className={clsx(styles.actions, styles.columnActions)}>
         <Menu
@@ -76,6 +81,7 @@ export const VideoUsers: React.FC = () => {
           <p className={styles.columnTime}>Время просмотра</p>
           <p className={styles.columnDate}>Дата регистрации</p>
           <p className={styles.columnReferal}>Ваш реферал?</p>
+          <p className={styles.columnType}>Тип</p>
           <p className={styles.columnActions}>Действие</p>
         </div>
         <VideoUserItem />
