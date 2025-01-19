@@ -1,3 +1,7 @@
 .player {
-    height: 100%;
+  height: 100%;
+}
+
+.player.short {
+  object-fit: cover;
 }

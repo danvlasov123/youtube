@@ -1,13 +1,15 @@
 import React from "react";
 import styles from "./player.module.scss";
+import clsx from "clsx";
 
 export const Player = React.forwardRef<
   HTMLVideoElement,
-  React.ComponentProps<"video">
+  { isShort?: boolean } & React.ComponentProps<"video">
 >((props, ref) => {
+  const { isShort = false, ...rest } = props;
   return (
     <video
-      className={styles.player}
+      className={clsx(styles.player, { [styles.short]: isShort })}
       tabIndex={-1}
       loop
       muted
@@ -17,7 +19,7 @@ export const Player = React.forwardRef<
       autoPlay
       src="https://cdn.pixabay.com/video/2016/10/09/5858-865412786_large.mp4"
       ref={ref}
-      {...props}
+      {...rest}
     ></video>
   );
 });

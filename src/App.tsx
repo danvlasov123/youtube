@@ -1,3 +1,4 @@
+import { Shorts } from "./components";
 import { Header } from "./layout";
 import { CatalogPage } from "./pages/catalog";
 import { VideoPage } from "./pages/video";
@@ -13,6 +14,7 @@ export const App = () => {
           <Route path="/video" element={<VideoPage />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
+        <Shorts trigger={<button></button>} />
       </div>
     </BrowserRouter>
   );
