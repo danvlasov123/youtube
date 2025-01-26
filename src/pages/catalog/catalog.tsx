@@ -9,12 +9,20 @@ import { FaFire, FaMusic } from "react-icons/fa";
 import { SiYoutubeshorts } from "react-icons/si";
 import { IoIosSearch } from "react-icons/io";
 
-const CATEGORIES = ["Все", "Музыка", "Новое для вас", "Шортс", "Просмотрено"];
+const CATEGORIES = [
+  "Все",
+  "Музыка",
+  "Новое для вас",
+  "Шортс",
+  "Просмотрено",
+  "Новости",
+  "Шоу",
+];
 
 export const CatalogPage: React.FC = () => {
   return (
     <div className={styles.page}>
-      <section className={styles.poster}>
+      <section className={styles.actions}>
         <div className={styles.categories}>
           {CATEGORIES.map((c, index) => (
             <Badge
@@ -36,6 +44,19 @@ export const CatalogPage: React.FC = () => {
           <Button>
             <IoIosSearch fontSize={20} />
           </Button>
+        </div>
+      </section>
+      <section className={styles.poster}>
+        <img
+          height={400}
+          width="100%"
+          src="https://i.vimeocdn.com/video/1963574657-631176f0ffd56c75a37e9e4d36aadde1f68be7802ca7fc252fe3e028d6ed558b-d_960x540?r=pad"
+        />
+        <div className={styles.poster__content}>
+          <h1>
+            Оформите пробную версию Premium для <br /> просмотра платных видео.
+          </h1>
+          <Button variant="default">Месяц бесплатно</Button>
         </div>
       </section>
       <section className={styles.section}>

@@ -7,9 +7,11 @@ import styles from "./shorts.module.scss";
 import { SwiperRef, Swiper, SwiperSlide } from "swiper/react";
 import { Mousewheel, Pagination } from "swiper/modules";
 import "swiper/swiper-bundle.css";
-import { Player } from "../player";
 
 import { FaArrowDown } from "react-icons/fa6";
+import { AiOutlineLike } from "react-icons/ai";
+import { ShortItem } from "./item";
+import { IoMdShareAlt } from "react-icons/io";
 
 export const Shorts: React.FC<{ trigger: React.ReactElement }> = ({
   trigger,
@@ -26,8 +28,6 @@ export const Shorts: React.FC<{ trigger: React.ReactElement }> = ({
     sliderRef.current.swiper.slideNext();
   }, []);
   const [open, setOpen] = React.useState(false);
-
-  console.log({ open });
 
   const TriggerComponent = React.cloneElement(trigger, {
     onClick: () => setOpen(true),
@@ -52,13 +52,13 @@ export const Shorts: React.FC<{ trigger: React.ReactElement }> = ({
           className={styles.swiper}
         >
           <SwiperSlide className={styles.slide}>
-            <Player isShort />
+            <ShortItem />
           </SwiperSlide>
           <SwiperSlide className={styles.slide}>
-            <Player isShort />
+            <ShortItem />
           </SwiperSlide>
           <SwiperSlide className={styles.slide}>
-            <Player isShort />
+            <ShortItem />
           </SwiperSlide>
         </Swiper>
 
@@ -68,6 +68,12 @@ export const Shorts: React.FC<{ trigger: React.ReactElement }> = ({
           </button>
           <button onClick={handleNext}>
             <FaArrowDown />
+          </button>
+          <button>
+            <AiOutlineLike fontSize={24} />
+          </button>
+          <button>
+            <IoMdShareAlt fontSize={24} />
           </button>
         </div>
       </Modal>

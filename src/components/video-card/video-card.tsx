@@ -5,6 +5,7 @@ import clsx from "clsx";
 
 import { Link } from "react-router";
 import { Shorts } from "../shorts";
+import { MdOutlineAttachMoney } from "react-icons/md";
 
 export const VideoCard: React.FC<{ isShort?: boolean }> = ({
   isShort = false,
@@ -29,6 +30,12 @@ export const VideoCard: React.FC<{ isShort?: boolean }> = ({
         <div className={clsx(styles.preview, { [styles.short]: isShort })}>
           <img src={src} alt="" />
           <span>03:32</span>
+          {Math.random() < 0.5 && !isShort && (
+            <p>
+              <MdOutlineAttachMoney />
+              Платное
+            </p>
+          )}
         </div>
         <div className={styles.body}>
           <Avatar size={24} title="M" />
