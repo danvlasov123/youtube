@@ -14,7 +14,7 @@ export const Header = () => {
       </div>
       <div className={styles.right}>
         <div className={styles.actions}>
-          <Link to="/" className="flex">
+          <Link to="/donate" className="flex">
             <PiQuestionLight fontSize={22} cursor="pointer" />
           </Link>
 
