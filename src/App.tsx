@@ -1,4 +1,3 @@
-import { Shorts } from "./components";
 import { Header } from "./layout";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router";
 import { CatalogPage, DonatePage, VideoPage } from "./pages";
