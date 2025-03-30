@@ -1,11 +1,10 @@
 .page {
   height: 100%;
   padding: 24px;
-  padding-top: 0;
+  padding-top: 16px;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  background-color: white;
 }
 
 .actions {
@@ -14,6 +13,8 @@
   justify-content: space-between;
   background-color: white;
   border-radius: 16px;
+  margin: 0 -10px;
+  padding: 12px;
 }
 
 .poster {

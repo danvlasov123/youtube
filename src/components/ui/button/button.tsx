@@ -26,6 +26,7 @@ export const Button: React.FC<React.PropsWithChildren<ButtonProps>> = ({
         [styles.dark]: variant === "dark",
         [styles.icon]: variant === "icon",
         [styles.small]: size === "small",
+        [styles.large]: size === "large",
       })}
     >
       {children}

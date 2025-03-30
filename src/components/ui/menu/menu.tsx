@@ -24,7 +24,10 @@ export const Menu: React.FC<MenuProps> = ({
           <BaseMenu.Popup className={styles.popup}>
             {options.map((option) =>
               option.label === "separator" ? (
-                <BaseMenu.Separator className={styles.separator} />
+                <BaseMenu.Separator
+                  key={option.label}
+                  className={styles.separator}
+                />
               ) : (
                 <BaseMenu.Item className={styles.item} key={option.label}>
                   {option?.icon}

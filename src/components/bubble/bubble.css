@@ -1,0 +1,21 @@
+.bubble-container {
+  position: relative;
+  background: #f8f9fa;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  cursor: grab;
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+.bubble.dragging {
+  cursor: grabbing;
+  transition: none;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}

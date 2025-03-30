@@ -6,3 +6,4 @@ export * from "./switch";
 export * from "./input";
 export * from "./modal";
 export * from "./tabs";
+export * from "./checkbox";

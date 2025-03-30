@@ -1,20 +1,19 @@
 import { Shorts } from "./components";
 import { Header } from "./layout";
-import { CatalogPage } from "./pages/catalog";
-import { VideoPage } from "./pages/video";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router";
+import { CatalogPage, DonatePage, VideoPage } from "./pages";
 
 export const App = () => {
   return (
     <BrowserRouter>
-      <div className="Root">
+      <div className="app">
         <Header />
         <Routes>
           <Route path="/" element={<CatalogPage />} />
           <Route path="/video" element={<VideoPage />} />
+          <Route path="/donate" element={<DonatePage />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
-        <Shorts trigger={<button></button>} />
       </div>
     </BrowserRouter>
   );
