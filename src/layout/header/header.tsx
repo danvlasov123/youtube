@@ -5,6 +5,7 @@ import { PiQuestionLight, PiPlus } from "react-icons/pi";
 import { LiaCrownSolid } from "react-icons/lia";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { Link } from "react-router";
+import clsx from "clsx";
 
 export const Header = () => {
   return (
@@ -13,7 +14,7 @@ export const Header = () => {
         <Link to="/">LOGO</Link>
       </div>
       <div className={styles.right}>
-        <div className={styles.actions}>
+        <div className={clsx(styles.actions, "mobile-hide")}>
           <Link to="/donate" className="flex">
             <PiQuestionLight fontSize={22} cursor="pointer" />
           </Link>

@@ -5,6 +5,8 @@ import { BubbleChart } from "src/components/bubble";
 import styles from "./donate.module.css";
 
 import { DonationForm } from "./form";
+import { Button } from "src/components/ui";
+import { CgClose } from "react-icons/cg";
 
 export const DonatePage = () => {
   const [data, setData] = React.useState([
@@ -79,6 +81,8 @@ export const DonatePage = () => {
     { id: "69", name: "Shell", value: 1 },
   ]);
 
+  const [isShow, setIsShow] = React.useState(false);
+
   const wrapperRef = React.useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = React.useState({ width: 0, height: 0 });
 
@@ -101,37 +105,33 @@ export const DonatePage = () => {
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.content}>
-        <div className={styles.left}>
-          <h1 className={styles.title}>Поддержите наш проект! 💙</h1>
-          <p className={styles.description}>
-            Благодаря нашим спонсорам мы продолжаем развивать сервис, улучшать
-            его функционал и предоставлять пользователям лучшие возможности.{" "}
-            <br /> Если вы хотите внести свой вклад и поддержать нас,
-            присоединяйтесь к числу спонсоров! <br />
-          </p>
-          <div ref={wrapperRef} className={styles.bubble}>
-            <BubbleChart
-              data={data}
-              width={dimensions.width}
-              height={dimensions.height}
-            />
+      <div className={styles.head}>
+        <h1 className={styles.title}>Поддержите наш проект! 💙</h1>
+        <Button
+          variant={isShow ? "default" : "dark"}
+          onClick={() => setIsShow((prev) => !prev)}
+        >
+          {isShow ? "Close" : "Стать спонсором"}
+        </Button>
+      </div>
+      <div ref={wrapperRef} className={styles.bubble}>
+        <BubbleChart
+          data={data}
+          width={dimensions.width}
+          height={dimensions.height}
+        />
+      </div>
+      {isShow && (
+        <div className={styles.form}>
+          <div className={styles.form__head}>
+            <p className={styles.form__title}>Оплата 💳</p>
+            <Button variant="icon" onClick={() => setIsShow(false)}>
+              <CgClose fontSize={18} />
+            </Button>
           </div>
-          <p className={styles.description}>
-            Ваше имя или логотип может быть размещен здесь в знак благодарности
-            за вашу поддержку. 🙌
-          </p>
-        </div>
-        <div className={styles.right}>
-          <h1 className={styles.title}>Оплата 💳</h1>
-          <p className={styles.description}>
-            Оплатите быстро и безопасно с помощью удобного для вас способа. Мы
-            поддерживаем различные платежные системы, чтобы сделать процесс
-            максимально комфортным. 🚀
-          </p>
           <DonationForm onSubmit={onSubmit} />
         </div>
-      </div>
+      )}
     </div>
   );
 };

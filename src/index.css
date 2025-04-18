@@ -77,3 +77,14 @@ li {
   flex-direction: column;
   height: 100%;
 }
+
+button {
+  background-color: inherit;
+  border: none;
+}
+
+@media screen and (max-width: 768px) {
+  .mobile-hide {
+    display: none !important;
+  }
+}

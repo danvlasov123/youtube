@@ -8,6 +8,8 @@ import {
   forceY,
 } from "d3-force";
 
+import { isMobile } from "react-device-detect";
+
 interface BubbleNode {
   id: string;
   name: string;
@@ -47,10 +49,10 @@ export const BubbleChart: React.FC<BubbleChartProps> = ({
 
     const radiusScale = d3.scaleSqrt().domain([0, maxValue]).range([10, 50]);
 
-    const fontSizeScale = d3.scaleLinear().domain([0, maxValue]).range([8, 16]); //
+    const fontSizeScale = d3.scaleLinear().domain([0, maxValue]).range([8, 16]);
 
     const simulation = forceSimulation<BubbleNode>(nodes)
-      .force("charge", forceManyBody().strength(-5))
+      .force("charge", forceManyBody().strength(-3))
       .force(
         "collision",
         forceCollide<BubbleNode>().radius((d) => radiusScale(d.value) + 1)
@@ -58,19 +60,20 @@ export const BubbleChart: React.FC<BubbleChartProps> = ({
       .force(
         "x",
         forceX<BubbleNode>(width / 2).strength(
-          (d) => 0.1 * (d.value / maxValue)
+          (d) => 0.15 * (d.value / maxValue)
         )
       )
       .force(
         "y",
         forceY<BubbleNode>(height / 2).strength(
-          (d) => 0.1 * (d.value / maxValue)
+          (d) => 0.15 * (d.value / maxValue)
         )
       )
       .on("tick", ticked);
 
-    const circles = svg
-      .append("g")
+    const group = svg.append("g"); // Группа для всех элементов, к которой будет применяться зум
+
+    const circles = group
       .selectAll("circle")
       .data(nodes)
       .enter()
@@ -87,8 +90,7 @@ export const BubbleChart: React.FC<BubbleChartProps> = ({
           .on("end", dragended)
       );
 
-    const labels = svg
-      .append("g")
+    const labels = group
       .selectAll("text")
       .data(nodes)
       .enter()
@@ -97,14 +99,15 @@ export const BubbleChart: React.FC<BubbleChartProps> = ({
       .attr("text-anchor", "middle")
       .attr("fill", "white")
       .style("pointer-events", "none")
-      .style("font-size", (d) => `${fontSizeScale(d.value)}px`); // Динамический размер
+      .style("font-size", (d) => `${fontSizeScale(d.value)}px`);
 
+    // Функция для обработки тикания симуляции
     function ticked() {
       circles.attr("cx", (d) => d.x!).attr("cy", (d) => d.y!);
-
       labels.attr("x", (d) => d.x!).attr("y", (d) => d.y! + 5);
     }
 
+    // Функции для перетаскивания
     function dragstarted(
       event: d3.D3DragEvent<SVGCircleElement, BubbleNode, unknown>,
       d: BubbleNode
@@ -131,6 +134,26 @@ export const BubbleChart: React.FC<BubbleChartProps> = ({
       d.fx = null;
       d.fy = null;
       simulation.alpha(0.3).restart();
+    }
+    const zoom = d3
+      .zoom<SVGSVGElement, unknown>()
+      .scaleExtent([0.3, 5])
+      .on("zoom", (event: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
+        group.attr(
+          "transform",
+          `translate(${event.transform.x},${event.transform.y}) scale(${event.transform.k})`
+        );
+      });
+
+    svg.call(zoom);
+
+    const initialTransform = d3.zoomIdentity
+      .translate(width / 2, height / 2)
+      .scale(0.5)
+      .translate(-width / 2, -height / 2);
+
+    if (isMobile) {
+      svg.call(zoom.transform, initialTransform);
     }
 
     return () => {
