@@ -1,16 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
-import {
-  forceSimulation,
-  forceManyBody,
-  forceCollide,
-  forceX,
-  forceY,
-} from "d3-force";
 
 import { isMobile } from "react-device-detect";
 
-interface BubbleNode {
+// Интерфейс одного элемента пузыря
+export interface BubbleNode {
   id: string;
   name: string;
   value: number;
@@ -20,146 +14,144 @@ interface BubbleNode {
   fy?: number | null;
 }
 
+// Интерфейс пропсов для компонента
 interface BubbleChartProps {
-  width: number;
-  height: number;
   data: Array<{ id: string; name: string; value: number }>;
 }
 
-export const BubbleChart: React.FC<BubbleChartProps> = ({
-  width,
-  height,
-  data,
-}) => {
+// Компонент BubbleChart
+export const BubbleChart: React.FC<BubbleChartProps> = ({ data }) => {
   const svgRef = useRef<SVGSVGElement>(null);
-
-  const maxValue = Math.max(...data.map((d) => d.value));
-
-  const nodes: BubbleNode[] = data.map((item) => ({
-    ...item,
-    x: width / 2,
-    y: height / 2,
-  }));
 
   useEffect(() => {
     if (!svgRef.current) return;
 
     const svg = d3.select(svgRef.current);
-    svg.selectAll("*").remove();
+    svg.selectAll("*").remove(); // Очистка SVG перед рендером
 
+    // Получаем размеры SVG из самого элемента
+    const width = svgRef.current.clientWidth;
+    const height = svgRef.current.clientHeight;
+
+    const centerX = width / 2;
+    const centerY = height / 2;
+
+    const maxValue = Math.max(...data.map((d) => d.value));
+
+    // Скейлы для радиуса и шрифта
     const radiusScale = d3.scaleSqrt().domain([0, maxValue]).range([10, 50]);
-
     const fontSizeScale = d3.scaleLinear().domain([0, maxValue]).range([8, 16]);
 
-    const simulation = forceSimulation<BubbleNode>(nodes)
-      .force("charge", forceManyBody().strength(-3))
-      .force(
-        "collision",
-        forceCollide<BubbleNode>().radius((d) => radiusScale(d.value) + 1)
-      )
-      .force(
-        "x",
-        forceX<BubbleNode>(width / 2).strength(
-          (d) => 0.15 * (d.value / maxValue)
-        )
-      )
-      .force(
-        "y",
-        forceY<BubbleNode>(height / 2).strength(
-          (d) => 0.15 * (d.value / maxValue)
-        )
-      )
-      .on("tick", ticked);
+    // Расстояние между пузырьками
+    const padding = 0.1;
 
-    const group = svg.append("g"); // Группа для всех элементов, к которой будет применяться зум
+    // Расставляем пузырьки так, чтобы они притягивались к центру
+    const nodes: BubbleNode[] = data.map((item) => {
+      // Используем значение пузырька для того, чтобы определить его начальное расстояние от центра
+      const radius = radiusScale(item.value);
+      const angle = Math.random() * 2 * Math.PI; // случайный угол
+      const distance = Math.max(radius + padding, Math.random() * 200 + 50); // Используем радиус для начального расстояния от центра
 
+      return {
+        ...item,
+        x: centerX + distance * Math.cos(angle), // Позиция по оси X
+        y: centerY + distance * Math.sin(angle), // Позиция по оси Y
+      };
+    });
+
+    // Определение группы для всех элементов
+    const group = svg.append("g");
+
+    // Добавление кружков на экран
     const circles = group
       .selectAll("circle")
       .data(nodes)
       .enter()
       .append("circle")
+      .attr("cx", (d) => d.x!)
+      .attr("cy", (d) => d.y!)
       .attr("r", (d) => radiusScale(d.value))
       .attr("fill", "black")
-      .attr("stroke", "black")
-      .attr("stroke-width", 2)
       .call(
         d3
           .drag<SVGCircleElement, BubbleNode>()
-          .on("start", dragstarted)
-          .on("drag", dragged)
-          .on("end", dragended)
+          .on("start", (_, d) => {
+            // Начало перетаскивания
+            d.fx = d.x!;
+            d.fy = d.y!;
+          })
+          .on("drag", (event, d) => {
+            // Перетаскивание
+            d.fx = event.x;
+            d.fy = event.y;
+            d.x = event.x;
+            d.y = event.y;
+            simulation.alpha(0.3).restart(); // Перезапуск симуляции
+          })
+          .on("end", (_, d) => {
+            // Завершение перетаскивания
+            d.fx = null;
+            d.fy = null;
+            simulation.alpha(0.3).restart(); // Перезапуск симуляции
+          })
       );
 
+    // Добавление текста с именами
     const labels = group
       .selectAll("text")
       .data(nodes)
       .enter()
       .append("text")
       .text((d) => d.name)
+      .attr("x", (d) => d.x!)
+      .attr("y", (d) => d.y!)
+      .attr("dy", ".35em")
       .attr("text-anchor", "middle")
       .attr("fill", "white")
       .style("pointer-events", "none")
       .style("font-size", (d) => `${fontSizeScale(d.value)}px`);
 
-    // Функция для обработки тикания симуляции
+    // Применяем притягивание
+    const simulation = d3
+      .forceSimulation<BubbleNode>(nodes) // Указываем тип узлов как BubbleNode
+      .force("charge", d3.forceManyBody().strength(0)) // Убираем заряд
+      .force(
+        "collision",
+        d3.forceCollide<BubbleNode>().radius((d) => {
+          console.log(d);
+          return radiusScale(d.value + padding);
+        })
+      )
+      .force(
+        "center",
+        d3.forceCenter(centerX, centerY).strength(0.05) // Притягиваем к центру
+      )
+      .on("tick", ticked);
+
+    // Функция для обновления положения элементов
     function ticked() {
       circles.attr("cx", (d) => d.x!).attr("cy", (d) => d.y!);
-      labels.attr("x", (d) => d.x!).attr("y", (d) => d.y! + 5);
+      labels.attr("x", (d) => d.x!).attr("y", (d) => d.y!);
     }
 
-    // Функции для перетаскивания
-    function dragstarted(
-      event: d3.D3DragEvent<SVGCircleElement, BubbleNode, unknown>,
-      d: BubbleNode
-    ) {
-      if (!event.active) simulation.alphaTarget(0.3).restart();
-      d.fx = d.x!;
-      d.fy = d.y!;
-    }
-
-    function dragged(
-      event: d3.D3DragEvent<SVGCircleElement, BubbleNode, unknown>,
-      d: BubbleNode
-    ) {
-      d.fx = event.x;
-      d.fy = event.y;
-      simulation.alpha(0.3).restart();
-    }
-
-    function dragended(
-      event: d3.D3DragEvent<SVGCircleElement, BubbleNode, unknown>,
-      d: BubbleNode
-    ) {
-      if (!event.active) simulation.alphaTarget(0);
-      d.fx = null;
-      d.fy = null;
-      simulation.alpha(0.3).restart();
-    }
+    // Добавление зума
     const zoom = d3
       .zoom<SVGSVGElement, unknown>()
-      .scaleExtent([0.3, 5])
-      .on("zoom", (event: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
-        group.attr(
-          "transform",
-          `translate(${event.transform.x},${event.transform.y}) scale(${event.transform.k})`
-        );
+      .scaleExtent([0.5, 5]) // Масштабируем от 0.5 до 5
+      .on("zoom", (event) => {
+        group.attr("transform", event.transform); // Применяем трансформацию зума
       });
 
     svg.call(zoom);
 
-    const initialTransform = d3.zoomIdentity
-      .translate(width / 2, height / 2)
-      .scale(0.5)
-      .translate(-width / 2, -height / 2);
-
     if (isMobile) {
-      svg.call(zoom.transform, initialTransform);
+      svg.call(zoom.transform, d3.zoomIdentity.translate(90, 120).scale(0.55));
     }
 
     return () => {
       simulation.stop();
     };
-  }, [width, height, data, maxValue]);
+  }, [data]);
 
-  return <svg ref={svgRef} width="100%" height="100%" />;
+  return <svg ref={svgRef} style={{ width: "100%", height: "100%" }} />;
 };

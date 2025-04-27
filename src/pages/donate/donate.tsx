@@ -84,24 +84,11 @@ export const DonatePage = () => {
   const [isShow, setIsShow] = React.useState(false);
 
   const wrapperRef = React.useRef<HTMLDivElement>(null);
-  const [dimensions, setDimensions] = React.useState({ width: 0, height: 0 });
 
   const onSubmit = (value: number, name: string) => {
     console.log(name, value);
     setData([...data, { name: name, id: data.length + 1 + "", value }]);
   };
-
-  React.useEffect(() => {
-    if (!wrapperRef.current) return;
-
-    const resizeObserver = new ResizeObserver((entries) => {
-      const { width, height } = entries[0].contentRect;
-      setDimensions({ width, height });
-    });
-
-    resizeObserver.observe(wrapperRef.current);
-    return () => resizeObserver.disconnect();
-  }, []);
 
   return (
     <div className={styles.wrapper}>
@@ -115,11 +102,7 @@ export const DonatePage = () => {
         </Button>
       </div>
       <div ref={wrapperRef} className={styles.bubble}>
-        <BubbleChart
-          data={data}
-          width={dimensions.width}
-          height={dimensions.height}
-        />
+        <BubbleChart data={data} />
       </div>
       {isShow && (
         <div className={styles.form}>
