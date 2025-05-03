@@ -36,8 +36,8 @@ export const BubbleChart: React.FC<BubbleChartProps> = ({ data }) => {
     const maxValue = Math.max(...data.map((d) => d.value));
 
     const radiusScale = d3.scaleSqrt().domain([0, maxValue]).range([10, 50]);
-    const fontSizeScale = d3.scaleLinear().domain([0, maxValue]).range([8, 16]);
-    const padding = 2;
+    const fontSizeScale = d3.scaleLinear().domain([0, maxValue]).range([4, 16]);
+    const padding = 0;
 
     const nodes: BubbleNode[] = data.map((item) => {
       const radius = radiusScale(item.value);
@@ -99,7 +99,7 @@ export const BubbleChart: React.FC<BubbleChartProps> = ({ data }) => {
     // D3 Simulation с магнитизмом к центру
     const simulation = d3
       .forceSimulation<BubbleNode>(nodes)
-      .force("charge", d3.forceManyBody().strength(-60))
+      .force("charge", d3.forceManyBody().strength(-2))
       .force(
         "collision",
         d3
