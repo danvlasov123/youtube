@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
-
 import { isMobile } from "react-device-detect";
 
 // Интерфейс одного элемента пузыря
@@ -29,40 +28,30 @@ export const BubbleChart: React.FC<BubbleChartProps> = ({ data }) => {
     const svg = d3.select(svgRef.current);
     svg.selectAll("*").remove(); // Очистка SVG перед рендером
 
-    // Получаем размеры SVG из самого элемента
     const width = svgRef.current.clientWidth;
     const height = svgRef.current.clientHeight;
-
     const centerX = width / 2;
     const centerY = height / 2;
 
     const maxValue = Math.max(...data.map((d) => d.value));
 
-    // Скейлы для радиуса и шрифта
     const radiusScale = d3.scaleSqrt().domain([0, maxValue]).range([10, 50]);
     const fontSizeScale = d3.scaleLinear().domain([0, maxValue]).range([8, 16]);
+    const padding = 2;
 
-    // Расстояние между пузырьками
-    const padding = 0.1;
-
-    // Расставляем пузырьки так, чтобы они притягивались к центру
     const nodes: BubbleNode[] = data.map((item) => {
-      // Используем значение пузырька для того, чтобы определить его начальное расстояние от центра
       const radius = radiusScale(item.value);
-      const angle = Math.random() * 2 * Math.PI; // случайный угол
-      const distance = Math.max(radius + padding, Math.random() * 200 + 50); // Используем радиус для начального расстояния от центра
-
+      const angle = Math.random() * 2 * Math.PI;
+      const distance = Math.max(radius + padding, Math.random() * 200 + 50);
       return {
         ...item,
-        x: centerX + distance * Math.cos(angle), // Позиция по оси X
-        y: centerY + distance * Math.sin(angle), // Позиция по оси Y
+        x: centerX + distance * Math.cos(angle),
+        y: centerY + distance * Math.sin(angle),
       };
     });
 
-    // Определение группы для всех элементов
     const group = svg.append("g");
 
-    // Добавление кружков на экран
     const circles = group
       .selectAll("circle")
       .data(nodes)
@@ -76,27 +65,23 @@ export const BubbleChart: React.FC<BubbleChartProps> = ({ data }) => {
         d3
           .drag<SVGCircleElement, BubbleNode>()
           .on("start", (_, d) => {
-            // Начало перетаскивания
             d.fx = d.x!;
             d.fy = d.y!;
           })
           .on("drag", (event, d) => {
-            // Перетаскивание
             d.fx = event.x;
             d.fy = event.y;
             d.x = event.x;
             d.y = event.y;
-            simulation.alpha(0.3).restart(); // Перезапуск симуляции
+            simulation.alpha(0.3).restart();
           })
           .on("end", (_, d) => {
-            // Завершение перетаскивания
             d.fx = null;
             d.fy = null;
-            simulation.alpha(0.3).restart(); // Перезапуск симуляции
+            simulation.alpha(0.3).restart();
           })
       );
 
-    // Добавление текста с именами
     const labels = group
       .selectAll("text")
       .data(nodes)
@@ -111,35 +96,30 @@ export const BubbleChart: React.FC<BubbleChartProps> = ({ data }) => {
       .style("pointer-events", "none")
       .style("font-size", (d) => `${fontSizeScale(d.value)}px`);
 
-    // Применяем притягивание
+    // D3 Simulation с магнитизмом к центру
     const simulation = d3
-      .forceSimulation<BubbleNode>(nodes) // Указываем тип узлов как BubbleNode
-      .force("charge", d3.forceManyBody().strength(0)) // Убираем заряд
+      .forceSimulation<BubbleNode>(nodes)
+      .force("charge", d3.forceManyBody().strength(-60))
       .force(
         "collision",
-        d3.forceCollide<BubbleNode>().radius((d) => {
-          console.log(d);
-          return radiusScale(d.value + padding);
-        })
+        d3
+          .forceCollide<BubbleNode>()
+          .radius((d) => radiusScale(d.value) + padding)
       )
-      .force(
-        "center",
-        d3.forceCenter(centerX, centerY).strength(0.05) // Притягиваем к центру
-      )
+      .force("x", d3.forceX(centerX).strength(0.06))
+      .force("y", d3.forceY(centerY).strength(0.06))
       .on("tick", ticked);
 
-    // Функция для обновления положения элементов
     function ticked() {
       circles.attr("cx", (d) => d.x!).attr("cy", (d) => d.y!);
       labels.attr("x", (d) => d.x!).attr("y", (d) => d.y!);
     }
 
-    // Добавление зума
     const zoom = d3
       .zoom<SVGSVGElement, unknown>()
-      .scaleExtent([0.5, 5]) // Масштабируем от 0.5 до 5
+      .scaleExtent([0.5, 5])
       .on("zoom", (event) => {
-        group.attr("transform", event.transform); // Применяем трансформацию зума
+        group.attr("transform", event.transform);
       });
 
     svg.call(zoom);
